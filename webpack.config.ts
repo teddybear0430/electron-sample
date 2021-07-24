@@ -35,13 +35,16 @@ const base: Configuration = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: [
           /* セキュリティ対策のため（後述）style-loader は使用しない **/
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: { sourceMap: isDev },
+          },
+          {
+            loader: 'sass-loader',
           },
         ],
       },
@@ -58,7 +61,7 @@ const main: Configuration = {
   ...base,
   target: 'electron-main',
   entry: {
-    main: './electron/main.ts'
+    main: './electron/main.ts',
   },
 };
 
@@ -74,7 +77,7 @@ const preload: Configuration = {
 // レンダラープロセス用の設定
 const render: Configuration = {
   ...base,
- // セキュリティ対策として 'electron-renderer' ターゲットは使用しない
+  // セキュリティ対策として 'electron-renderer' ターゲットは使用しない
   target: 'web',
   entry: {
     renderer: './src/renderer.tsx',
